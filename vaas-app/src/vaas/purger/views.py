@@ -9,6 +9,7 @@ from vaas.purger.purger import VarnishPurger
 
 
 def purge_view(request):
+    PurgeForm
     if request.method == 'POST':
         form = PurgeForm(request.POST)
         if form.is_valid():

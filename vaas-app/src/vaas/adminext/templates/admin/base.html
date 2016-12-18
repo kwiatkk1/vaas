@@ -1,22 +1,16 @@
-{% load admin_static bootstrapped_goodies_tags %}{% load url from future %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+{% load admin_static material_form %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 <head>
+    <meta charset="utf-8">
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     {% block extrastyle %}{% endblock %}
 
-    <!-- Le styles, placed after extrastyle to correctly override default styling -->
-    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet"/>
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-    </style>
-    <link href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="{% static "admin/css/overrides.css" %}" />
+    {% include 'material/includes/material_css.html' %}
+    <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+    {% include 'material/includes/material_js.html' %}
 
     <!-- <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" /> -->
     <script type="text/javascript">
@@ -24,9 +18,6 @@
         window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";
         //]]>
     </script>
-    <script src="{% static "admin/js/jquery-1.9.1.min.js" %}"></script>
-    <script src="{% static "admin/js/jquery-migrate-1.2.1.min.js" %}"></script>
-    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 
     {% block extrahead %}{% endblock %}
 
@@ -81,7 +72,6 @@
                         </li>
                         {% block languages %}
                         <li class="divider-vertical"></li>
-                        {% language_selector %}
                         {% endblock languages %}
                         {% block logs %}
                         <li class="dropdown" id="recent-actions-module">
@@ -137,7 +127,7 @@
             <div class="navbar">
                 <div class="navbar-inner">
                     {% block pretitle %}{% endblock %}
-                    {% block content_title %}{% if title %}<a class="brand">{% render_with_template_if_exist title|lower|add:"/admin_app_name.html" title %}</a>{% endif %}{% endblock %}
+                    {% block content_title %}{% if title %}<a class="brand">{{ title }}</a>{% endif %}{% endblock %}
                     {% block object-tools %}{% endblock %}
                 </div>
             </div>

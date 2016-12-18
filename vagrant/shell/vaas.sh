@@ -60,7 +60,7 @@ else
 fi
 
 if [ ! -f /tmp/db.sqlite3 ] ; then
-  $VAAS_SRC_HOME/manage.py syncdb --noinput
+  $VAAS_SRC_HOME/manage.py migrate --noinput
   $VAAS_SRC_HOME/manage.py loaddata $VAAS_SRC_HOME/vaas/resources/data.yaml
 fi
 

@@ -5,7 +5,6 @@ import os
 from django.conf import global_settings
 from vaas.configuration.loader import YamlConfigLoader
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 current_dir = os.path.abspath(os.path.dirname(__file__))
 config_loader = YamlConfigLoader()
@@ -27,7 +26,9 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 INSTALLED_APPS = (
     'django_nose',
     'vaas.adminext',
-    'django_admin_bootstrapped',
+    'material',
+    'material.frontend',
+    'material.admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,15 +84,28 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-TEMPLATE_DIRS = (current_dir + "templates",)
-
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    'django.core.context_processors.request',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            current_dir + "templates",
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ]
+        }
+    }
+]
 
 LOGGING = {
     'version': 1,
@@ -108,21 +122,24 @@ LOGGING = {
             'filename': '/tmp/debug.log',
             'formatter': 'verbose'
         },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'propagate': False,
-            'level': 'ERROR',
+            'level': 'DEBUG',
         },
         'vaas': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'propagate': False,
             'level': 'DEBUG',
         },
         '': {
-            'handlers': ['file'],
-            'level': 'INFO',
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
         }
     }
 }
